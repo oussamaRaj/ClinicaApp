@@ -1,5 +1,12 @@
 package Logica;
 
+import ConexionDB.GestorConexion;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class GestorAdministrador {
@@ -20,12 +27,109 @@ public class GestorAdministrador {
             System.out.println("7. Listar Todas las Citas");
             System.out.println("8. Generar Informe XML");
             System.out.println("0. Salir");
+
+            System.out.println("== == == == == == == == == == == ==");
+            System.out.printf("Elige opcion: ");
             opcion = SC.nextInt();
             SC.nextLine();
 
             switch(opcion){
                 case 1:
+                    altaPaciente();
+                    break;
+                case 2:
+                    altaMedico();
+                    break;
+                case 0:
+                    System.out.println("Saliendo del Gestor del Administrador..");
+                    break;
+                default:
+                    System.out.println("Opcion Invalida!");
+                    break;
             }
         }while (opcion != 0);
+    }
+
+    public static void altaPaciente(){
+        System.out.println("==ALTA PACIENTE==");
+        System.out.println("Introduce Dni del Paciente : ");
+        String dni = SC.nextLine();
+        System.out.println("Introduce Nombre del Paciente : ");
+        String nombre = SC.nextLine();
+        System.out.println("Introduce Apellidos del Paciente : ");
+        String apellidos = SC.nextLine();
+        System.out.println("Introduce Telefono del Paciente : ");
+        String telefono = SC.nextLine();
+        System.out.println("Introduce Email del Paciente : ");
+        String email = SC.nextLine();
+        System.out.println("Introduce Fecha Nacimiento del Paciente (YYYY-MM-DD): ");
+        String fechaTexto = SC.nextLine();
+        LocalDate fechaNacimiento = LocalDate.parse(fechaTexto);
+        System.out.println("Introduce el Numero Historial del Paciente : ");
+        String numHistorial = SC.nextLine();
+
+        String sql = "INSERT INTO paciente (dni, nombre, apellidos, telefono, email, fechaNac, numHestorial) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try(Connection conn = GestorConexion.obtenerConexion();
+            PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ptmt.setString(1, dni);
+            ptmt.setString(2, nombre);
+            ptmt.setString(3, apellidos);
+            ptmt.setString(4, telefono);
+            ptmt.setString(5, email);
+            ptmt.setDate(6, Date.valueOf(fechaNacimiento));
+            ptmt.setString(7, numHistorial);
+
+            int file = ptmt.executeUpdate();
+            if (file > 0) {
+                System.out.println("El Paciente Insertado con exito..");
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error al insertar el Paciente: " + e.getMessage());
+        }
+    }
+
+    public static void altaMedico(){
+        System.out.println("==ALTA Medico==");
+        System.out.println("Introduce Dni del Medico : ");
+        String dni = SC.nextLine();
+        System.out.println("Introduce Nombre del Medico : ");
+        String nombre = SC.nextLine();
+        System.out.println("Introduce Apellidos del Medico : ");
+        String apellidos = SC.nextLine();
+        System.out.println("Introduce Telefono del Medico : ");
+        String telefono = SC.nextLine();
+        System.out.println("Introduce Email del Medico : ");
+        String email = SC.nextLine();
+        System.out.println("Introduce Fecha Nacimiento del Medico (YYYY-MM-DD): ");
+        String fechaTexto = SC.nextLine();
+        LocalDate fechaNacimiento = LocalDate.parse(fechaTexto);
+        System.out.println("Introduce la Especialidad del Medico : ");
+        String especialidad = SC.nextLine();
+        System.out.printf("Introduce el numero Colegiado : ");
+        String numColegiado = SC.nextLine();
+
+        String sql = "INSERT INTO medico (dni, nombre, apellidos, telefono, email, fechaNac, especialidad, numColegiado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try(Connection conn = GestorConexion.obtenerConexion();
+            PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ptmt.setString(1, dni);
+            ptmt.setString(2, nombre);
+            ptmt.setString(3, apellidos);
+            ptmt.setString(4, telefono);
+            ptmt.setString(5, email);
+            ptmt.setDate(6, Date.valueOf(fechaNacimiento));
+            ptmt.setString(7, especialidad);
+            ptmt.setString(8, numColegiado);
+
+            int file = ptmt.executeUpdate();
+            if (file > 0) {
+                System.out.println("El Medico Insertado con exito..");
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error al insertar el Medico: " + e.getMessage());
+        }
     }
 }

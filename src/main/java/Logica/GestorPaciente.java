@@ -13,6 +13,8 @@ public class GestorPaciente {
            System.out.println("2. Ver mis Citas");
            System.out.println("3. Cancelar Cita");
            System.out.println("0. Salir");
+           System.out.println("== == == == == == == == == == == ");
+           System.out.printf("Elige opcion: ");
            opcion = SC.nextInt();
            SC.nextLine();
 
