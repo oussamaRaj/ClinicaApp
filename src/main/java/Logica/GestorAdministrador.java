@@ -2,11 +2,9 @@ package Logica;
 
 import ConexionDB.GestorConexion;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class GestorAdministrador {
@@ -39,6 +37,21 @@ public class GestorAdministrador {
                     break;
                 case 2:
                     altaMedico();
+                    break;
+                case 3:
+                    eliminarPaciente();
+                    break;
+                case 4:
+                    eliminarMedico();
+                    break;
+                case 5:
+                    listarTodosPacientes();
+                    break;
+                case 6:
+                    listarTodosMedicos();
+                    break;
+                case 7:
+                    listarTodasCitas();
                     break;
                 case 0:
                     System.out.println("Saliendo del Gestor del Administrador..");
@@ -130,6 +143,128 @@ public class GestorAdministrador {
 
         }catch (SQLException e){
             System.out.println("Error al insertar el Medico: " + e.getMessage());
+        }
+    }
+
+    public static void eliminarPaciente(){
+        System.out.println("==ELIMINAR PACIENTE==");
+        System.out.println("Introduce Dni del Paciente : ");
+        String dni = SC.nextLine();
+
+        String sql = "DELETE FROM paciente WHERE dni = ?";
+
+        try (Connection conn = GestorConexion.obtenerConexion();
+             PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ptmt.setString(1, dni);
+
+            int fila = ptmt.executeUpdate();
+            if (fila > 0) {
+                System.out.println("El Paciente Eliminado con exito..");
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error al eliminar el Paciente: " + e.getMessage());
+        }
+    }
+
+    public static void eliminarMedico(){
+        System.out.println("==ELIMINAR MEDICO==");
+        System.out.println("Introduce Dni del Medico : ");
+        String dni = SC.nextLine();
+
+        String sql = "DELETE FROM medico WHERE dni = ?";
+
+        try (Connection conn = GestorConexion.obtenerConexion();
+             PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ptmt.setString(1, dni);
+
+            int fila = ptmt.executeUpdate();
+            if (fila > 0) {
+                System.out.println("El Medico Eliminado con exito..");
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error al eliminar el Medico: " + e.getMessage());
+        }
+    }
+
+    public static void listarTodosPacientes(){
+        System.out.println("==LISTAR PACIENTES==");
+
+        String sql = "SELECT * FROM paciente";
+        try (Connection conn = GestorConexion.obtenerConexion();
+             PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()){
+                int codigo = rs.getInt("codigo");
+                String dni = rs.getString("dni");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("email");
+                LocalDate fecha = rs.getDate("fechaNac").toLocalDate();
+                String numHistorial = rs.getString("numHestorial");
+
+                System.out.println("Codigo: " + codigo + " | Dni : " + dni + " | Nombre : " + nombre + " " + apellidos + " | Telefono : " +
+                                    telefono + " | Email : " + email + " | Fecha Nacimiento : " + fecha + " | Numero Historial : " + numHistorial);
+            }
+        }catch (SQLException e){
+            System.out.println("Error al listar el Paciente: " + e.getMessage());
+        }
+    }
+
+    public static void listarTodosMedicos(){
+        System.out.println("==LISTAR MEDICOS==");
+
+        String sql = "SELECT * FROM medico";
+        try (Connection conn = GestorConexion.obtenerConexion();
+             PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()){
+                int codigo = rs.getInt("codigo");
+                String dni = rs.getString("dni");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                String telefono = rs.getString("telefono");
+                String email = rs.getString("email");
+                LocalDate fecha = rs.getDate("fechaNac").toLocalDate();
+                String especialidad = rs.getString("especialidad");
+                String numColegiado = rs.getString("numColegiado");
+
+                System.out.println("Codigo: " + codigo + " | Dni : " + dni + " | Nombre : " + nombre + " " + apellidos + " | Telefono : " +
+                        telefono + " | Email : " + email + " | Fecha Nacimiento : " + fecha + " | Especialidad : " + especialidad + " | Numero Colegiado : " + numColegiado);
+            }
+        }catch (SQLException e){
+            System.out.println("Error al listar el Medico: " + e.getMessage());
+        }
+    }
+
+    public static void listarTodasCitas(){
+        System.out.println("==LISTAR CITAS==");
+
+        String sql = "SELECT * FROM cita";
+        try (Connection conn = GestorConexion.obtenerConexion();
+             PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ResultSet rs = ptmt.executeQuery();
+            while (rs.next()){
+               int codigo = rs.getInt("codigo");
+               String codigoPaciente = rs.getString("codigoPaciente");
+               String codigoMedico = rs.getString("codigoMedico");
+               LocalDate fecha = rs.getDate("fecha").toLocalDate();
+               LocalTime hora = rs.getTime("hora").toLocalTime();
+               String motivo = rs.getString("motivo");
+               String estado = rs.getString("estado");
+
+                System.out.println("Codigo : " + codigo + " | Codigo Paciente : " + codigoPaciente + " | Codigo Medico : " +
+                        codigoMedico + " | Fecha : " + fecha + " | Hora : " + hora + " | Motivo : " + motivo + " | Estado : " + estado);
+            }
+        }catch (SQLException e){
+            System.out.println("Error al listar las Citas: " + e.getMessage());
         }
     }
 }
