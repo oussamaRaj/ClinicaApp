@@ -18,7 +18,7 @@ public class GestorMedico {
             System.out.println("1. Ver Citas de Hoy");
             System.out.println("2. Añadir Historial Clinico");
             System.out.println("3. Cancelar Cita");
-            System.out.println("4. Ver Historial Clinico del Paciente");
+            System.out.println("4. Ver Historial Clinico del Pacientegit");
             System.out.println("0. Salir");
             System.out.println("== == == == == == == == == == == == == == ");
 
