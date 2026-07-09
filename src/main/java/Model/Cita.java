@@ -7,15 +7,18 @@ public class Cita {
     private int codigo;
     private Medico codMedico;
     private Paciente codPaciente;
+    private Paciente dni;
     private LocalDate fecha;
     private LocalTime hora;
     private String motivo;
     private String estado;
 
-    public Cita( int codigo, Medico codMedico, Paciente codPaciente, LocalDate fecha, LocalTime hora, String motivo, String estado ){
+    public Cita( int codigo, Medico codMedico, Paciente codPaciente, LocalDate fecha, LocalTime hora, String motivo, String estado,
+                    Paciente dni){
         this.codigo = codigo;
         this.codMedico = codMedico;
         this.codPaciente = codPaciente;
+        this.dni = dni;
         this.fecha = fecha;
         this.hora = hora;
         this.motivo = motivo;
@@ -33,6 +36,9 @@ public class Cita {
     }
     public Paciente getCodPaciente() {
         return codPaciente;
+    }
+    public  Paciente getDni() {
+        return dni;
     }
     public LocalDate getFecha() {
         return fecha;
