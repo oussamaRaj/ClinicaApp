@@ -6,6 +6,7 @@ import Logica.GestorAdministrador;
 import Logica.GestorMedico;
 import Logica.GestorPaciente;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
