@@ -1,5 +1,12 @@
 package App;
 
+import ConexionDB.GestorConexion;
+import Logica.GestorAdministrador;
+import Logica.GestorMedico;
+import Logica.GestorPaciente;
+
+import java.util.Scanner;
+
 public class Main {
    static final Scanner SC = new Scanner(System.in);
     public static void main(String[] args) {
