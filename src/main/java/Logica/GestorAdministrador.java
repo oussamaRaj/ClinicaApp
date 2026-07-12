@@ -23,7 +23,7 @@ public class GestorAdministrador {
             System.out.println("5. Listar Todos los Pacientes");
             System.out.println("6. Listar Todos los Medicos");
             System.out.println("7. Listar Todas las Citas");
-            System.out.println("8. Generar Informe XML");
+            System.out.println("8. Eliminar Cita");
             System.out.println("0. Salir");
 
             System.out.println("== == == == == == == == == == == ==");
@@ -52,6 +52,9 @@ public class GestorAdministrador {
                     break;
                 case 7:
                     listarTodasCitas();
+                    break;
+                case 8:
+                    eliminarCita();
                     break;
                 case 0:
                     System.out.println("Saliendo del Gestor del Administrador..");
@@ -267,4 +270,28 @@ public class GestorAdministrador {
             System.out.println("Error al listar las Citas: " + e.getMessage());
         }
     }
+
+    public static void eliminarCita(){
+        System.out.println("==ELIMINAR Cita==");
+        System.out.println("Introduce el Codigo de la Cita : ");
+        int codigo = SC.nextInt();
+
+        String sql = "DELETE FROM cita WHERE codigo = ?";
+
+        try (Connection conn = GestorConexion.obtenerConexion();
+             PreparedStatement ptmt = conn.prepareStatement(sql)){
+
+            ptmt.setInt(1, codigo);
+
+            int fila = ptmt.executeUpdate();
+            if (fila > 0) {
+                System.out.println("La Cita Eliminada con exito..");
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error al eliminar la Cita : " + e.getMessage());
+        }
+    }
+
+
 }
